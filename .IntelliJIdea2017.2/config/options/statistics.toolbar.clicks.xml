@@ -1,6 +1,10 @@
 <application>
   <component name="ToolbarClicksCollector">
     <counts>
+      <entry action="ChangesView.AddUnversioned.From.Dialog@SPECIFIC_FILES_DIALOG" count="4" />
+      <entry action="ChangesView.DeleteUnversioned.From.Dialog@SPECIFIC_FILES_DIALOG" count="2" />
+      <entry action="ChangesView.Ignore@SPECIFIC_FILES_DIALOG" count="3" />
+      <entry action="Vcs.Log.QuickTextFilterSettings@Vcs.Log.Toolbar" count="1" />
       <entry action="com.intellij.ui.AnActionButton$AnActionButtonWrapper@ToolbarDecorator" count="2" />
     </counts>
   </component>
