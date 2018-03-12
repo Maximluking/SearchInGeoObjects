@@ -11,12 +11,11 @@ public class VehicleDAO {
     private Connection connection;
 
     public VehicleDAO() {
-        Connection connection = null;
-        Statement statement = null;
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            connection = DriverManager.getConnection("jdbc:sqlserver://212.109.44.46:1433\\\\SQLEXPRESS;databaseName=Tracker", "client251", "250787Qaz");
-            statement = connection.createStatement();
+            Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;\" +  \n" +
+                    "   \"databaseName=Tracker.dbo.tracking251;user=client251;password=250787Qaz;");
+            Statement statement = connection.createStatement();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -24,10 +23,9 @@ public class VehicleDAO {
 
 
     public List<Vehicle> showStopedInGeoObjects() {
-        try (PreparedStatement ps = connection.prepareStatement("SELECT id, unit, dt, x, y, speed FROM Tracker.dbo.tracking25 WHERE \n" +
-                "   x between 26.279050 AND 26.281360\n" +
-                "  AND y between 50.601350 AND 50.603380 AND \n" +
-                "   speed = 0 AND dt between '2017-01-01 00:00:00.000' AND '2017-01-01 00:00:00.000' ORDER BY dt;")) {
+        try (PreparedStatement ps = connection.prepareStatement("SELECT id, unit, dt, x, y, speed FROM Tracker.dbo.tracking251 WHERE \n" +
+
+                "   unit = 251273 and dt between '2017-01-01 00:00:00.000' AND '2017-01-02 00:00:00.000' ORDER BY dt;")) {
             ResultSet resultSet = ps.executeQuery();
             List<Vehicle> vehicles = new ArrayList<>();
             while (resultSet.next()) {
