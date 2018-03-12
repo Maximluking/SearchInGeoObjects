@@ -1,28 +1,32 @@
 package Model;
 
-public class Vehicle {
+public class TrackingPoint {
 
-    private int id;
+    private long id;
     private int unit;
     private String dt;
     private float x;
     private float y;
     private int speed;
+    private int event;
+    private String location;
 
-    public Vehicle(int id, int unit, String dt, float x, float y, int speed) {
+    public TrackingPoint(long id, int unit, String dt, float x, float y, int speed, int event, String location) {
         this.id = id;
         this.unit = unit;
         this.dt = dt;
         this.x = x;
         this.y = y;
         this.speed = speed;
+        this.event = event;
+        this.location = location;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -66,15 +70,33 @@ public class Vehicle {
         this.speed = speed;
     }
 
+    public int getEvent() {
+        return event;
+    }
+
+    public void setEvent(int event) {
+        this.event = event;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     @Override
     public String toString() {
-        return "Vehicle{" +
+        return "TrackingPoint{" +
                 "id=" + id +
                 ", unit=" + unit +
                 ", dt='" + dt + '\'' +
                 ", x=" + x +
                 ", y=" + y +
                 ", speed=" + speed +
+                ", event=" + event +
+                ", location='" + location + '\'' +
                 '}';
     }
 }

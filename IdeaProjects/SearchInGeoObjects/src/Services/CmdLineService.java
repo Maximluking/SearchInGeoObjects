@@ -1,10 +1,11 @@
 package Services;
 
-import Model.Vehicle;
+import Model.TrackingPoint;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.SQLException;
 
 public class CmdLineService {
 
@@ -27,7 +28,7 @@ public class CmdLineService {
         System.out.println("0. Go back");
     }
 
-    public void mainMenu() throws IOException {
+    public void mainMenu() throws IOException, SQLException {
         boolean isWork = true;
         do {
             showMainMenu();
@@ -46,14 +47,14 @@ public class CmdLineService {
         while (isWork);
     }
 
-    private void VehicleMenu() throws IOException {
+    private void VehicleMenu() throws IOException, SQLException {
         boolean isWork = true;
         do {
             showVehiclesMenu();
             String s = reader.readLine();
             switch (s) {
                 case "1":
-                    for (Vehicle vehicle : vehicleService.showStopedInGeoObjects()) {
+                    for (TrackingPoint vehicle : vehicleService.showStopedInGeoObjects()) {
                         System.out.println(vehicle);
                     }
                     System.out.println();

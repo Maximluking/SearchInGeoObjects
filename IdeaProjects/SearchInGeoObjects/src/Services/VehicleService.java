@@ -1,11 +1,13 @@
 package Services;
 
-import Model.Vehicle;
+import Model.TrackingPoint;
+
+import java.sql.SQLException;
 import java.util.List;
 
 public interface VehicleService {
 
     void findVehicle();
 
-    List<Vehicle> showStopedInGeoObjects();
+    List<TrackingPoint> showStopedInGeoObjects() throws SQLException;
 }
