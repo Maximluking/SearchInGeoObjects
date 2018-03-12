@@ -13,18 +13,17 @@ public class VehicleServiceDB implements VehicleService{
     private VehicleDAO vehicleDAO;
     private BufferedReader bufferedReader;
 
-    public VehicleServiceDB(VehicleDAO vehicleDAO, BufferedReader bufferedReader) {
+    public VehicleServiceDB() {
         this.vehicleDAO = new VehicleDAO();
         this.bufferedReader = new BufferedReader(new InputStreamReader(System.in));
     }
 
     @Override
     public void findVehicle() {
-
     }
 
     @Override
     public List<Vehicle> showStopedInGeoObjects() {
-        return null;
+        return vehicleDAO.showStopedInGeoObjects();
     }
 }
