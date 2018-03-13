@@ -6,6 +6,7 @@ import Services.FileApp;
 
 import java.io.IOException;
 import java.sql.*;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,61 +19,56 @@ public class TrackingPointDAO {
     final static String passwordDB = "250787Qaz";
     public final static String startPoint = "2017-01-01 00:00:00.000";
     public final static String endPoint = "2018-02-01 00:00:00.000";
-    public static String tempDate = "" + startPoint;
-    ;
+    public static String tempDate = startPoint;
 
-
-    private Connection connection;
-    private PreparedStatement ps;
-    private ResultSet resultSet;
     private FileApp fileApp;
     private DateForServices dateForServices;
     private List<TrackingPoint> trackingPoints;
 
     public TrackingPointDAO() {
-        this.connection = connection;
-        this.ps = ps;
-        this.resultSet = resultSet;
-        this.fileApp = fileApp;
-        this.dateForServices = dateForServices;
+        this.fileApp = new FileApp();
+        this.dateForServices = new DateForServices();
         this.trackingPoints = new ArrayList<>();
 
     }
 
-    public void showResultFromDB() throws SQLException, IOException {
+    public void findResultFromDB() throws SQLException, IOException, ParseException, ClassNotFoundException {
 
-        try {
+        if (dateForServices.ifEndOfSearch(tempDate)) {
 
             Class.forName(DriverName);
-            Connection connection = DriverManager.getConnection(UrlDB + ";databaseName=" + DBname + ";user=" + userDB + ";password=" + passwordDB + ";");
-            PreparedStatement ps = connection.prepareStatement("SELECT id, unit, dt, x, y, speed, event, lcation FROM Tracker.dbo.tracking251 WHERE x between 26.279050 AND 26.281360\n" +
-                    "  AND y between 50.601350 AND 50.603380 AND \n" +
-                    "   speed = 0 AND dt between " + "'" + tempDate + "'" + " AND " + "'" + dateForServices.nextDay(tempDate) + "'" + " ORDER BY dt");
-            ResultSet resultSet = ps.executeQuery();
+            try (
+                    Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;\" +  \n" +
+                            "   \"databaseName=Tracker.dbo.tracking251;user=client251;password=250787Qaz;");
+                    PreparedStatement ps = connection.prepareStatement("SELECT id, unit, dt, x, y, speed, event, location FROM Tracker.dbo.tracking251 WHERE" +
+                            " x between 26.279050 AND 26.281360\n" +
+                            "  AND y between 50.601350 AND 50.603380 AND \n" +
+                            "  speed = 0 AND dt between " + "'" + tempDate + "'" + " AND " + "'" + dateForServices.nextDay(tempDate) + "'" + " ORDER BY dt");
+                    ResultSet resultSet = ps.executeQuery();) {
+                while (resultSet.next()) {
+                    long id = resultSet.getLong("id");
+                    int unit = resultSet.getInt("unit");
+                    String dt = resultSet.getString("dt");
+                    float x = resultSet.getFloat("x");
+                    float y = resultSet.getFloat("y");
+                    int speed = resultSet.getInt("speed");
+                    int event = resultSet.getInt("event");
+                    String location = resultSet.getString("location");
+                    trackingPoints.add(new TrackingPoint(id, unit, dt, x, y, speed, event, location));
+                }
+                for (TrackingPoint trackingPoint : trackingPoints) {
+                    System.out.println(trackingPoint.toString());
+                }
 
-            while (resultSet.next()) {
-                long id = resultSet.getLong("id");
-                int unit = resultSet.getInt("unit");
-                String dt = resultSet.getString("dt");
-                float x = resultSet.getFloat("x");
-                float y = resultSet.getFloat("y");
-                int speed = resultSet.getInt("speed");
-                int event = resultSet.getInt("event");
-                String location = resultSet.getString("location");
-                trackingPoints.add(new TrackingPoint(id, unit, dt, x, y, speed, event, location));
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+                //System.out.println("on " + tempDate + " day there is no tracking point");
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                fileApp.saveResultToFile(trackingPoints);
+                findResultFromDB();
             }
-            for (TrackingPoint trackingPoint : trackingPoints) {
-                System.out.println(trackingPoint.toString());
-            }
-            ;
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            ps.close();
-            resultSet.close();
-            connection.close();
-            fileApp.saveResultToFile(trackingPoints);
-            showResultFromDB();
-        }
+        } else System.out.println("Search results in DB is stoped by endDate flag");
     }
 }

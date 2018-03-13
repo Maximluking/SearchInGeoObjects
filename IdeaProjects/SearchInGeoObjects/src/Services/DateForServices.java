@@ -1,5 +1,7 @@
 package Services;
 
+import DAO.TrackingPointDAO;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,17 +13,22 @@ public class DateForServices {
     private Calendar calendar;
 
 
-    public DateForServices(DateFormat simpleDateFormate) {
+    public DateForServices() {
         simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Helsinki"));
         calendar = Calendar.getInstance();
     }
 
-    public String nextDay(String tempDate) throws ParseException {
-        calendar.setTime(simpleDateFormat.parse(tempDate));
-        calendar.add(Calendar.DATE, 1);
-        return simpleDateFormat.format(calendar.getTime());
+    public boolean ifEndOfSearch(String date) throws ParseException {
+        if ((simpleDateFormat.parse(date)).getTime() >= (simpleDateFormat.parse(TrackingPointDAO.endPoint)).getTime()) {
+            return false;
+        } else return true;
     }
 
-
+    public String nextDay(String date) throws ParseException {
+        calendar.setTime(simpleDateFormat.parse(date));
+        calendar.add(Calendar.DATE, 1);
+        TrackingPointDAO.tempDate = simpleDateFormat.format(calendar.getTime());
+        return simpleDateFormat.format(calendar.getTime());
+    }
 }

@@ -1,5 +1,6 @@
 package Services;
 
+import DAO.TrackingPointDAO;
 import Model.TrackingPoint;
 
 import java.io.*;
@@ -11,7 +12,7 @@ public class FileApp {
 
     public void saveResultToFile(List<TrackingPoint> arrayList) throws IOException {
         if (arrayList.isEmpty()) {
-            System.out.println("Base empty!");
+            System.out.println("on " + TrackingPointDAO.tempDate + " day there is no tracking point");
         } else {
             File tempFile = new File("VehicleBase.txt");
             bw = new BufferedWriter(new FileWriter(tempFile));
