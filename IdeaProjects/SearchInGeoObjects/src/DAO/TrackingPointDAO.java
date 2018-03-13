@@ -17,7 +17,7 @@ public class TrackingPointDAO {
     final static String DBname = "Tracker.dbo.tracking251";
     final static String userDB = "client251";
     final static String passwordDB = "250787Qaz";
-    public final static String startPoint = "2017-04-26 00:00:00.000";
+    public final static String startPoint = "2017-05-03 18:00:00.000";
     public final static String endPoint = "2018-02-01 00:00:00.000";
     public static String tempDate = startPoint;
 
@@ -40,7 +40,7 @@ public class TrackingPointDAO {
             try (
                     Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;\" +  \n" +
                             "   \"databaseName=Tracker.dbo.tracking251;user=client251;password=250787Qaz;");
-                    PreparedStatement ps = connection.prepareStatement("SELECT id, unit, dt, x, y, speed, event, location FROM Tracker.dbo.tracking251 WHERE" +
+                    PreparedStatement ps = connection.prepareStatement("SELECT id, unit, dt, x, y, speed, event, location FROM Tracker.dbo.tracking251 WITH(NOLOCK) WHERE" +
                             " x between 26.279050 AND 26.281360\n" +
                             "  AND y between 50.601350 AND 50.603380 AND \n" +
                             "  speed = 0 AND dt between " + "'" + tempDate + "'" + " AND " + "'" + dateForServices.nextDay(tempDate) + "'" + " ORDER BY dt");
@@ -65,11 +65,11 @@ public class TrackingPointDAO {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                try {
-                    Thread.sleep(30000); // this pause for main thread need for normal work geokoders on localhost
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    Thread.sleep(30000); // this pause for main thread need for normal work geokoders on localhost
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
                 fileApp.saveResultToFile(trackingPoints);
                 findResultFromDB();
             }
