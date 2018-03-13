@@ -12,7 +12,7 @@ public class FileApp {
 
     public void saveResultToFile(List<TrackingPoint> arrayList) throws IOException {
         if (arrayList.isEmpty()) {
-            System.out.println("on " + TrackingPointDAO.tempDate + " day there is no tracking point");
+            System.out.println("on " + TrackingPointDAO.tempDate + " day there is no tracking point with speed 0 km/h and x, y in searching geoObject");
         } else {
             File tempFile = new File("VehicleBase.txt");
             bw = new BufferedWriter(new FileWriter(tempFile));
