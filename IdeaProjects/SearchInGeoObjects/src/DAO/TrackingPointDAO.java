@@ -17,7 +17,7 @@ public class TrackingPointDAO {
     final static String DBname = "Tracker.dbo.tracking251";
     final static String userDB = "client251";
     final static String passwordDB = "250787Qaz";
-    public final static String startPoint = "2017-01-01 00:00:00.000";
+    public final static String startPoint = "2017-04-26 00:00:00.000";
     public final static String endPoint = "2018-02-01 00:00:00.000";
     public static String tempDate = startPoint;
 
@@ -62,10 +62,14 @@ public class TrackingPointDAO {
 
             } catch (NullPointerException e) {
                 e.printStackTrace();
-                //System.out.println("on " + tempDate + " day there is no tracking point");
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
+                try {
+                    Thread.sleep(30000); // this pause for main thread need for normal work geokoders on localhost
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 fileApp.saveResultToFile(trackingPoints);
                 findResultFromDB();
             }

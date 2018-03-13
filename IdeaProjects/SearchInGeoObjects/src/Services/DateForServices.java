@@ -27,7 +27,7 @@ public class DateForServices {
 
     public String nextDay(String date) throws ParseException {
         calendar.setTime(simpleDateFormat.parse(date));
-        calendar.add(Calendar.DATE, 1);
+        calendar.add(Calendar.HOUR, 6);
         TrackingPointDAO.tempDate = simpleDateFormat.format(calendar.getTime());
         return simpleDateFormat.format(calendar.getTime());
     }
